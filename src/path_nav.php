@@ -10,8 +10,7 @@ if(!(isset($_SESSION['user_name']))){
 <!DOCTYPE html>
 <html>
 <head>
-
-    <title>Manual Navigation</title>
+    <title>Path Navigation</title>
 
 <!-- Style for table columns -->
 <style>
@@ -21,14 +20,15 @@ td {
 </style>
 
 <!-- Include script files -->
-<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+<script type="text/javascript" src="js/lib/easeljs.min.js"></script>
 <script type="text/javascript" src="js/lib/eventemitter2.min.js"></script>
 <script type="text/javascript" src="js/lib/roslib.min.js"></script>
-<script type="text/javascript" src="js/custom/manual_nav.js"></script>
-
+<script type="text/javascript" src="js/lib/ros2d.min.js"></script>
+<script type="text/javascript" src="js/custom/nav2d_pathnav.js"></script>
+<script type="text/javascript" src="js/custom/map_nav.js"></script>
 </head>
 
-<body>
+<body onload="loadMap()">
 
 <h3 align="right">
     <!-- Display session username and logout link -->
@@ -61,29 +61,16 @@ td {
             <td>
 		<div align="left">
 		<!-- Dropdown for setting linear and angular velocity -->
-		&nbsp;&nbsp;&nbsp; Linear velocity &nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;
-		<select id="linear_x_vel" name="linear_x_vel">
-		    <option value="0.05">Low</option>
-		    <option value="0.1" selected="selected">Medium</option>
-		    <option value="0.15">High</option>
-		</select></br></br>
-		&nbsp;&nbsp;&nbsp; Angular velocity &nbsp;: &nbsp; 
-		<select id="angular_z_vel" name="angular_z_vel">
-		    <option value="0.25">Low</option>
-		    <option value="0.5" selected="selected">Medium</option>
-		    <option value="0.75">High</option>
-		</select>
+		&nbsp;&nbsp;&nbsp; Goal timeout &nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;
+		<input type="number" id="timeout" name="timeout" value="30" step="15" min="15" max="300"/> &nbsp;&nbsp;s</br></br>
 		</div>
-		</br></br></br></br>
-		
-		<!-- Navigation controls -->
-		<input id="move_left" src="images/left.png" type="image" width="48" height="48"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input id="move_forward" src="images/forward.png" type="image" width="40" height="48"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input id="move_right" src="images/right.png" type="image" width="48" height="48"/></br></br>
-  		<input id="rotate_left" src="images/rotate_left.png" type="image" width="48" height="48"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input id="move_backward" src="images/backward.png" type="image" width="40" height="48"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input id="rotate_right" src="images/rotate_right.png" type="image" width="48" height="48"/></br></br></br></br>
-		<input id="emergency_stop" type="button" value="  Emergency Stop!!!  "/>
+		Select multiple goals to create a path and click 'Start Navigation'.</br></br>
+		<!-- Display map -->
+		<div id="map"></div>
+		</br></br>
+		<!-- Buttons for starting and stopping navigation -->
+		<input id="startnavigate" name="startnavigate" type="button" value="Start Navigation" onclick="startNavigation()"/>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input id="stopnavigate" name="stopnavigate" type="button" value="Stop Navigation" onclick="stopNavigation()"/>
             </td> 
 	    </tr>
 	</table>
@@ -112,4 +99,5 @@ td {
 
 </table>
 </body>
+
 </html>
