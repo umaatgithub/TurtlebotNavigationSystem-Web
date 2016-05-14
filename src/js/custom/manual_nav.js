@@ -261,10 +261,8 @@ var poseWithCovarianceStamped = new ROSLIB.Message({
 });
 
 function initializePose(){
-    //console.log('In function initialize pose.');
-    //if(connection_flag == true){
-        
-        if(getCookieValue("initial_pose_set")=="true"){
+    
+    if(getCookieValue("initial_pose_set")=="true"){
 	    console.log('Initial pose already set.');
 	}
 	else{
@@ -273,6 +271,5 @@ function initializePose(){
 	    setCookie("initial_pose_set", "true", 30);
 	}
 	
-    //}
 }
 

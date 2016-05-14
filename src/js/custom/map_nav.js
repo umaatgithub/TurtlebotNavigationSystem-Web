@@ -49,7 +49,6 @@ function loadMap(){
         height : 200
     });
     
-    //if(connection_flag == true){
     var nav = NAV2D.OccupancyGridClientNav({
         ros : ros,
         rootObject : viewer.scene,
@@ -58,13 +57,7 @@ function loadMap(){
         serverName : 'move_base',
 	withOrientation :true
     });
-
-    //nav.on('change', function(){
-    //  viewer.scaleToDimensions(nav.currentGrid.width, nav.currentGrid.height);
-    //});
-    //}
-    console.log('Calling function initialize pose.');
-    //initializePose();
+    
 }
 
 

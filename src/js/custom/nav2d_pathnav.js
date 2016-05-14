@@ -61,32 +61,18 @@ NAV2D.ImageMapClientNav = function(options) {
   });
 };
 
+//********************************************************************************************
 /**
- * @author Russell Toris - rctoris@wpi.edu
- * @author Lars Kunze - l.kunze@cs.bham.ac.uk
+ * Edited  : Umamaheswaran RAMAN KUMAR
+ * 			 Solene GUILLAUME
+ * Project : Turtlebot Navigation System
  */
-
-/**
- * A navigator can be used to add click-to-navigate options to an object. If
- * withOrientation is set to true, the user can also specify the orientation of
- * the robot by clicking at the goal position and pointing into the desired
- * direction (while holding the button pressed).
- *
- * @constructor
- * @param options - object with following keys:
- *   * ros - the ROSLIB.Ros connection handle
- *   * serverName (optional) - the action server name to use for navigation, like '/move_base'
- *   * actionName (optional) - the navigation action name, like 'move_base_msgs/MoveBaseAction'
- *   * rootObject (optional) - the root object to add the click listeners to and render robot markers to
- *   * withOrientation (optional) - if the Navigator should consider the robot orientation (default: false)
- */
-
+var goals = []; 
 var navigation = true;
 var goalIter = 0;
 var timer;
 var timerInterval = 30;
 function stopNavigation(){
-    //navigation = false;
     clearInterval(timer);
 }
 
@@ -111,22 +97,27 @@ function startNavigationLoop(){
     }
 }
 
-var goals = [];
-/**
-   * Send a goal to the navigation stack with the given pose.
-   *
-   * @param pose - the goal pose
-   */
-  function sendGoal(goal) {
-    var completed = false;
-    goal.send();
-    goal.on('result', function() {
-      completed = true;
-    });
-    while(completed == false){}
-    
-  }
+//********************************************************************************************
 
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ * @author Lars Kunze - l.kunze@cs.bham.ac.uk
+ */
+
+/**
+ * A navigator can be used to add click-to-navigate options to an object. If
+ * withOrientation is set to true, the user can also specify the orientation of
+ * the robot by clicking at the goal position and pointing into the desired
+ * direction (while holding the button pressed).
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * ros - the ROSLIB.Ros connection handle
+ *   * serverName (optional) - the action server name to use for navigation, like '/move_base'
+ *   * actionName (optional) - the navigation action name, like 'move_base_msgs/MoveBaseAction'
+ *   * rootObject (optional) - the root object to add the click listeners to and render robot markers to
+ *   * withOrientation (optional) - if the Navigator should consider the robot orientation (default: false)
+ */
 
 NAV2D.Navigator = function(options) {
   var that = this;
@@ -144,9 +135,12 @@ NAV2D.Navigator = function(options) {
     serverName : serverName
   });
 
-  
-
-
+  //********************************************************************************************
+  /**
+   * Edited  : Umamaheswaran RAMAN KUMAR
+   * 		   Solene GUILLAUME 
+   * Project : Turtlebot Navigation System 
+   */
   function addGoal(pose) {
     // create a goal
     var goal = new ROSLIB.Goal({
@@ -161,7 +155,6 @@ NAV2D.Navigator = function(options) {
       }
     });
     goals.push(goal);
-    
     // create a marker for the goal
     var goalMarker = new ROS2D.NavigationArrow({
       size : 13,
@@ -175,12 +168,9 @@ NAV2D.Navigator = function(options) {
     goalMarker.scaleX = 1.0 / stage.scaleX;
     goalMarker.scaleY = 1.0 / stage.scaleY;
     that.rootObject.addChild(goalMarker);
-
   }
-
-
+  //********************************************************************************************
   
-
   // get a handle to the stage
   var stage;
   if (that.rootObject instanceof createjs.Stage) {
@@ -326,7 +316,7 @@ NAV2D.Navigator = function(options) {
           position :    positionVec3,
           orientation : orientation
         });
-        // send the goal
+        // Edited Umamaheswaran RAMAN KUMAR
         addGoal(pose);
       }
     };

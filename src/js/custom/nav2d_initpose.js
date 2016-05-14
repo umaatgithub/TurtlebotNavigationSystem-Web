@@ -11,17 +11,6 @@ var NAV2D = NAV2D || {
  * @author Russell Toris - rctoris@wpi.edu
  */
 
-
-
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
-
-
 /**
  * A OccupancyGridClientNav uses an OccupancyGridClient to create a map for use with a Navigator.
  *
@@ -72,17 +61,26 @@ NAV2D.ImageMapClientNav = function(options) {
   });
 };
 
+//********************************************************************************************
+/**
+ * Edited  : Umamaheswaran RAMAN KUMAR
+ * 			 Solene GUILLAUME
+ * Project : Turtlebot Navigation System
+ */
 
-//-------------------------------------------------------------------------------------------
-
-
-
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+ 
 var poseWithCovarianceStamped = new ROSLIB.Message({
     header : {
         seq : 0,
         stamp : {
 	    secs: 0,
-            nsecs: 0	
+        nsecs: 0	
 	},
         frame_id : 'map'
     },
@@ -90,25 +88,23 @@ var poseWithCovarianceStamped = new ROSLIB.Message({
         pose : {
 	    position : {
 	        x : 0.312246918678,
-		y : 0.267449855804,
-		z : 0.0
+			y : 0.267449855804,
+			z : 0.0
 	    },
-            orientation : {
-		x : 0.0,
-		y : 0.0,
-		z : 0.709902956535,
-		w : 0.704299504688
+        orientation : {
+			x : 0.0,
+			y : 0.0,
+			z : 0.709902956535,
+			w : 0.704299504688
 	    }
 	},
-	covariance : [0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942]
+	covariance : [0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942]
     }
 });
 
-
-
-//-------------------------------------------------------------------------------------------
-
-
+//********************************************************************************************
 
 /**
  * @author Russell Toris - rctoris@wpi.edu
@@ -151,18 +147,20 @@ NAV2D.Navigator = function(options) {
     messageType : 'geometry_msgs/PoseWithCovarianceStamped'
 });
 
+  //********************************************************************************************
+  /**
+   * Edited  : Umamaheswaran RAMAN KUMAR
+   * 		   Solene GUILLAUME 
+   * Project : Turtlebot Navigation System 
+   */
 
-
-function initializePose(){
-    
-        
+  function initializePose(){
+    console.log('Initializing pose.');
+    initialPose.publish(poseWithCovarianceStamped);
+	setCookie("initial_pose_set", "true", 30);
+  }
   
-	    console.log('Initializing pose.');
-            initialPose.publish(poseWithCovarianceStamped);
-	    setCookie("initial_pose_set", "true", 30);
-	
-
-}
+  //********************************************************************************************
 
   /**
    * Send a goal to the navigation stack with the given pose.
@@ -183,9 +181,6 @@ function initializePose(){
       }
     });
     goal.send();
-
-    // create a marker for the goal
-   
   }
 
   // get a handle to the stage
@@ -334,11 +329,10 @@ function initializePose(){
           position :    positionVec3,
           orientation : orientation
         });
-        // send the goal
-        //sendGoal(pose);
-
-	poseWithCovarianceStamped.pose.pose = new_pose;
-	initializePose();
+        
+		//Edited Umamaheswaran RAMAN KUMAR
+		poseWithCovarianceStamped.pose.pose = new_pose;
+		initializePose();
 	
       }
     };
